@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option go_package = "github.com/lattots/julius/proto";
+
+import "google/protobuf/timestamp.proto";
+
+package event;
+
+message SingleEventRequest {
+  uint32 eventID = 1;
+}
+
+message SingleEventResponse {
+  uint32 eventID = 1;
+  string name = 2;
+  string host = 3;
+  optional string location = 4;
+  google.protobuf.Timestamp startTime = 5;
+  google.protobuf.Timestamp endTime = 6;
+  optional string dressCode = 7;
+  optional string theme = 8;
+  optional float price = 9;
+  optional string signupLink = 10;
+}
+
+message MultiEventRequest {
+  google.protobuf.Timestamp fromDate = 1;
+  optional google.protobuf.Timestamp toDate = 2;
+  optional uint32 count = 3;
+}
+
+message MultiEventResponse {
+  repeated SingleEventResponse events = 1;
+}
+
+service EventService {
+  rpc GetEvent (SingleEventRequest) returns (SingleEventResponse);
+  rpc GetEvents (MultiEventRequest) returns (MultiEventResponse);
+}
